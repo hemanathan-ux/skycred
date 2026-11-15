@@ -1,0 +1,13 @@
+# dependencies (none required, but keep it safe)
+node_modules/
+
+# local env — real keys must never be committed
+.env
+.env.local
+
+# vercel
+.vercel
+
+# os / editor
+.DS_Store
+Thumbs.db
