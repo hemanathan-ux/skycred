@@ -25,7 +25,7 @@ const DEFAULT_CITY = "Mumbai"; // FR-10: Mumbai loads automatically on launch
 const REQUEST_TIMEOUT_MS = 10000;
 const STORAGE_KEY = "skycred:lastCity";
 
-/* WeatherAPI condition code groups (codes per WeatherAPI docs) */
+/* WeatherAPI condition code sets (from the official conditions list) */
 const THUNDER_CODES = new Set([1087, 1273, 1276, 1279, 1282]);
 const RAIN_CODES = new Set([
   1063, 1150, 1153, 1168, 1171, 1180, 1183, 1186, 1189, 1192, 1195, 1198,
@@ -33,9 +33,16 @@ const RAIN_CODES = new Set([
 ]);
 const SNOW_CODES = new Set([
   1066, 1069, 1072, 1114, 1117, 1204, 1207, 1210, 1213, 1216, 1219, 1222,
-  1225, 1237, 1249, 1252, 1261, 1264,
+  1225, 1237, 1249, 1252, 1255, 1258, 1261, 1264,
 ]);
-const FOG_CODES = new Set([1030, 1135, 1147]);
+/* Fog, mist, haze, smoke, dust and sand storms all reduce visibility */
+const FOG_CODES = new Set([
+  1012, 1015, 1018, 1021, 1024, 1027, 1030, 1033, 1036, 1039, 1042, 1045,
+  1048, 1135, 1147,
+]);
+const CLOUD_CODES = new Set([1006, 1009]);
+const PARTLY_CLOUDY_CODE = 1003;
+const CLEAR_CODE = 1000;
 
 /* ---------------- DOM handles ---------------- */
 
@@ -349,9 +356,9 @@ function pickIcon(code, isDay) {
   if (RAIN_CODES.has(code)) return "🌧️";
   if (SNOW_CODES.has(code)) return "❄️";
   if (FOG_CODES.has(code)) return "🌫️";
-  if (code === 1000) return isDay === 0 ? "🌙" : "☀️";
-  if (code === 1003) return isDay === 0 ? "☁️" : "🌤️";
-  if (code === 1006 || code === 1009) return "☁️";
+  if (code === CLEAR_CODE) return isDay === 0 ? "🌙" : "☀️";
+  if (code === PARTLY_CLOUDY_CODE) return isDay === 0 ? "☁️" : "🌤️";
+  if (CLOUD_CODES.has(code)) return "☁️";
   return "🌤️"; // default icon if the code is unmapped
 }
 
